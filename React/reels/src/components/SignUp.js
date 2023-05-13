@@ -40,66 +40,66 @@ export default function SignUp() {
 
   const classes = useStyles();
 
-  const {signup} = useContext(AuthContext)
+  const { signup } = useContext(AuthContext)
 
 
-  const [email , setEmail] = useState('')
-  const [password , setPassword] = useState('')
-  const [name , setName] = useState('')
-  const [file , setFile] = useState(null)
-  const [error , setError] = useState('')
-  const [loading , setLoading] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [file, setFile] = useState(null)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
 
 
- let handleClick = async ()=>{
-      console.log(email)
-      console.log(password)
-      console.log(name)
-      console.log(file)
+  let handleClick = async () => {
+    console.log(email)
+    console.log(password)
+    console.log(name)
+    console.log(file)
 
-      try {
-        setLoading(true)
-        const userInfo = await signup(email , password)
-        console.log(userInfo.user.uid)
-        let uid =  userInfo.user.uid
-        
+    try {
+      setLoading(true)
+      const userInfo = await signup(email, password)
+      console.log(userInfo.user.uid)
+      let uid = userInfo.user.uid
 
 
-        const storageRef = ref(storage , `${userInfo.user.uid}/Profile`)
-        const uploadTask = uploadBytesResumable(storageRef , file)
 
-        uploadTask.on('state_changed' , (snapshot)=>{
-          const progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log("Upload is " + progress + "% done");
-        },
+      const storageRef = ref(storage, `${userInfo.user.uid}/Profile`)
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      uploadTask.on('state_changed', (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
         (error) => {
           // A full list of error codes is available at
           // https://firebase.google.com/docs/storage/web/handle-errors
           console.log(error);
-        }, ()=>{
-                   getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL)=>{
-                    database.users.doc(uid).set({
-                      email:email,
-                      userId:uid,
-                      fullname:name,
-                      profileUrl:downloadURL,
-                      createdAt:database.getTimestamp()
-                  })
-                   })
+        }, () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            database.users.doc(uid).set({
+              email: email,
+              userId: uid,
+              fullname: name,
+              profileUrl: downloadURL,
+              createdAt: database.getTimestamp()
+            })
+          })
         })
 
 
-        navigate('/feed')
-      } catch (error) {
-        console.log(error)
-      }
+      navigate('/feed')
+    } catch (error) {
+      console.log(error)
+    }
 
 
 
- }
+  }
 
   return (
     <div className="signupWrapper">
@@ -126,8 +126,8 @@ export default function SignUp() {
               margin="dense"
               fullWidth={true}
               size="small"
-              value={email} 
-              onChange={(e)=>setEmail(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               id="outlined-basic"
@@ -136,8 +136,8 @@ export default function SignUp() {
               margin="dense"
               fullWidth={true}
               size="small"
-              value={password} 
-              onChange={(e)=>setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <TextField
               id="outlined-basic"
@@ -146,8 +146,8 @@ export default function SignUp() {
               margin="dense"
               fullWidth={true}
               size="small"
-              value={name} 
-              onChange={(e)=>setName(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
 
             <Button

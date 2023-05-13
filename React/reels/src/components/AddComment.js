@@ -6,21 +6,21 @@ import { database } from "../firebase";
 function AddComment({ userData, postData }) {
   const [comment, setComment] = useState("");
 
-  const handleClick =()=>{
-       let obj={
-              comment : comment,
-              uProfileImage:userData.profileUrl,
-              uName : userData.fullname
+  const handleClick = () => {
+    let obj = {
+      comment: comment,
+      uProfileImage: userData.profileUrl,
+      uName: userData.fullname
 
-       }
+    }
 
-       database.comments.add(obj).then((doc)=>{
-              database.posts.doc(postData.postId).update({
-                     comments : [...postData.comments , doc.id]
-              })
-       })
+    database.comments.add(obj).then((doc) => {
+      database.posts.doc(postData.postId).update({
+        comments: [...postData.comments, doc.id]
+      })
+    })
 
-       setComment('')
+    setComment('')
   }
   return (
     <div style={{ width: "100%" }}>
@@ -30,11 +30,11 @@ function AddComment({ userData, postData }) {
         variant="outlined"
         size="small"
         sx={{ width: "70%" }}
-
+        style={{marginBottom:"1rem"}}
         value={comment}
-        onChange = {(e)=>setComment(e.target.value)}
+        onChange={(e) => setComment(e.target.value)}
       />
-      <Button variant="contained" onClick={handleClick}>Post Comment</Button>
+      <Button variant="contained" style={{marginBottom:"1rem"}} onClick={handleClick}>Post Comment</Button>
     </div>
   );
 }
